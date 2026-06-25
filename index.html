@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WeatherWise Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<header class="navbar">
+
+<div class="logo"> WeatherWise</div>
+
+<div class="nav-links">
+<a href="index.html">Home</a>
+<a href="forecast.html">Forecast</a>
+<a href="health.html">Health</a>
+</div>
+
+<div class="search">
+<input type="text" id="cityInput" placeholder="Search City">
+<button onclick="getWeather()">search</button>
+</div>
+
+</header>
+
+<section class="hero">
+
+<div class="hero-content">
+
+<h1 id="cityName">Bangalore</h1>
+
+<p id="dateTime"></p>
+
+<div class="stats">
+
+<div class="stat">
+<h3 id="wind">--</h3>
+<span>Wind</span>
+</div>
+
+<div class="stat">
+<h3 id="humidity">--</h3>
+<span>Humidity</span>
+</div>
+
+<div class="stat">
+<h3 id="aqi">Good</h3>
+<span>AQI</span>
+</div>
+
+</div>
+
+</div>
+
+<div class="temp-card">
+
+<div id="weatherIcon">☁</div>
+
+<h2 id="temp">23°C</h2>
+
+<p id="condition">Cloudy</p>
+
+</div>
+
+</section>
+
+<section class="forecast">
+
+<h2>Quick Access</h2>
+
+<div class="forecast-cards">
+
+<div class="card" onclick="window.location.href='forecast.html'">
+Forecast
+</div>
+
+<div class="card" onclick="window.location.href='health.html'">
+Health Guide
+</div>
+
+</div>
+
+</section>
+
+<section class="health">
+
+<h2>Today's Health Recommendation</h2>
+
+<div id="healthAdvice">
+Stay hydrated and exercise regularly.
+</div>
+
+</section>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
