@@ -1,48 +1,82 @@
-const APILINK = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=6c15403173438a88267ed4d2b436248d";
-const IMGPATH = "https://image.tmdb.org/t/p/w1280";
-const SEARCHAPI = "https://api.themoviedb.org/3/search/movie?api_key=6c15403173438a88267ed4d2b436248d&query=";
+const API_KEY = "6c15403173438a88267ed4d2b436248d";
 
-const main = document.getElementById("section");
-const form = document.getElementById("form");
-const Search = document.getElementById("query");
+function updateDateTime(){
 
-// Load default movies
-returnMovies(APILINK);
+const now = new Date();
 
-function returnMovies(url) {
-    fetch(url)
-        .then(res => res.json())
-        .then(function(data) {
-            main.innerHTML = ""; // clear previous
+document.getElementById("dateTime").innerHTML =
+now.toDateString() + " | " +
+now.toLocaleTimeString();
 
-            data.results.forEach(element => {
-
-                const div_card = document.createElement("div");
-                div_card.classList.add("card");
-
-                const div_image = document.createElement("img");
-                div_image.classList.add("thumbnail");
-                div_image.src = IMGPATH + element.poster_path;
-
-                const div_title = document.createElement("h3");
-                div_title.innerHTML = element.title;
-
-                div_card.appendChild(div_image);
-                div_card.appendChild(div_title);
-
-                main.appendChild(div_card);
-            });
-        });
 }
 
-// Search
-form.addEventListener("submit", (e) => {
-    e.preventDefault();
+setInterval(updateDateTime,1000);
+updateDateTime();
 
-    const searchTerm = Search.value;
+async function getWeather(){
 
-    if (searchTerm) {
-        returnMovies(SEARCHAPI + searchTerm);
-        Search.value = "";
-    }
-});
+const city =
+document.getElementById("cityInput").value;
+
+if(!city) return;
+
+try{
+
+const response = await fetch(
+`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`
+);
+
+const data = await response.json();
+
+document.getElementById("cityName").innerHTML =
+data.name;
+
+document.getElementById("temp").innerHTML =
+Math.round(data.main.temp) + "°C";
+
+document.getElementById("humidity").innerHTML =
+data.main.humidity + "%";
+
+document.getElementById("wind").innerHTML =
+data.wind.speed + " km/h";
+
+document.getElementById("condition").innerHTML =
+data.weather[0].main;
+
+updateHealthAdvice(
+data.main.temp,
+data.weather[0].main
+);
+
+}
+catch(error){
+
+alert("City not found");
+
+}
+
+}
+
+function updateHealthAdvice(temp, condition){
+
+let advice = "Maintain a healthy lifestyle.";
+
+if(temp > 35){
+advice =
+"💧 Drink more water and avoid direct sunlight.";
+}
+
+if(condition === "Rain"){
+advice =
+"☂ Carry an umbrella and avoid stagnant water.";
+}
+
+if(temp < 15){
+advice =
+"🧥 Wear warm clothes and drink hot beverages.";
+}
+
+document.getElementById("healthAdvice").innerHTML =
+advice;
+
+}
