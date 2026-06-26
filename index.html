@@ -1,105 +1,235 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WeatherWise Dashboard</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Zomato Clone - Food Delivery</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
-
 <body>
 
-<div class="dashboard">
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <span class="logo-z">z</span><span class="logo-omato">omato</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="restaurants.html" class="nav-link">Restaurants</a>
+        <a href="cart.html" class="nav-link cart-link">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count" id="nav-cart-count">0</span>
+        </a>
+        <button class="btn-login" onclick="toggleLoginModal()">Log in</button>
+      </div>
+      <div class="hamburger" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="index.html">Home</a>
+      <a href="restaurants.html">Restaurants</a>
+      <a href="cart.html">Cart</a>
+    </div>
+  </nav>
 
-<header class="navbar">
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Order food &amp; groceries. <br>Discover best restaurants.</h1>
+      <p>Find the best food &amp; drinks in your city, delivered fast to your door.</p>
+      <div class="hero-search">
+        <div class="location-input">
+          <i class="fas fa-map-marker-alt"></i>
+          <input type="text" id="location-input" placeholder="Enter your delivery location" />
+        </div>
+        <div class="search-divider"></div>
+        <div class="search-input-wrap">
+          <i class="fas fa-search"></i>
+          <input type="text" id="hero-search" placeholder="Search for restaurants, cuisines..." />
+        </div>
+        <button class="btn-find" onclick="heroSearch()">Find Food</button>
+      </div>
+    </div>
+    <div class="hero-image">🍔🍕🍣🌮🍜</div>
+  </section>
 
-<div class="logo"> WeatherWise</div>
+  <!-- CATEGORIES -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title">What are you craving?</h2>
+      <div class="categories-grid">
+        <div class="category-card" onclick="filterByCategory('pizza')">
+          <div class="cat-icon">🍕</div>
+          <div class="cat-name">Pizza</div>
+        </div>
+        <div class="category-card" onclick="filterByCategory('burger')">
+          <div class="cat-icon">🍔</div>
+          <div class="cat-name">Burgers</div>
+        </div>
+        <div class="category-card" onclick="filterByCategory('sushi')">
+          <div class="cat-icon">🍣</div>
+          <div class="cat-name">Sushi</div>
+        </div>
+        <div class="category-card" onclick="filterByCategory('indian')">
+          <div class="cat-icon">🍛</div>
+          <div class="cat-name">Indian</div>
+        </div>
+        <div class="category-card" onclick="filterByCategory('chinese')">
+          <div class="cat-icon">🥡</div>
+          <div class="cat-name">Chinese</div>
+        </div>
+        <div class="category-card" onclick="filterByCategory('dessert')">
+          <div class="cat-icon">🧁</div>
+          <div class="cat-name">Desserts</div>
+        </div>
+        <div class="category-card" onclick="filterByCategory('biryani')">
+          <div class="cat-icon">🍚</div>
+          <div class="cat-name">Biryani</div>
+        </div>
+        <div class="category-card" onclick="filterByCategory('south indian')">
+          <div class="cat-icon">🥘</div>
+          <div class="cat-name">South Indian</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<div class="nav-links">
-<a href="index.html">Home</a>
-<a href="forecast.html">Forecast</a>
-<a href="health.html">Health</a>
-</div>
+  <!-- TOP RESTAURANTS -->
+  <section class="section bg-light">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Top restaurants near you</h2>
+        <a href="restaurants.html" class="see-all">See all <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div class="restaurants-grid" id="home-restaurants"></div>
+    </div>
+  </section>
 
-<div class="search">
-<input type="text" id="cityInput" placeholder="Search City">
-<button onclick="getWeather()">search</button>
-</div>
+  <!-- HOW IT WORKS -->
+  <section class="section">
+    <div class="container">
+      <h2 class="section-title center">How it works</h2>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div class="step-icon">📍</div>
+          <h3>Choose location</h3>
+          <p>Enter your delivery address to find restaurants near you.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div class="step-icon">🍽</div>
+          <h3>Pick your food</h3>
+          <p>Browse menus, read reviews and pick what you want.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div class="step-icon">💳</div>
+          <h3>Place your order</h3>
+          <p>Order securely and track it in real time.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <div class="step-icon">🚴</div>
+          <h3>Fast delivery</h3>
+          <p>Your food arrives hot at your doorstep.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-</header>
+  <!-- OFFERS BANNER -->
+  <section class="offers-section">
+    <div class="container">
+      <div class="offer-cards">
+        <div class="offer-card red">
+          <div class="offer-text">
+            <h3>50% OFF</h3>
+            <p>On your first order with code <strong>FIRST50</strong></p>
+          </div>
+          <div class="offer-emoji">🎉</div>
+        </div>
+        <div class="offer-card orange">
+          <div class="offer-text">
+            <h3>Free delivery</h3>
+            <p>On orders above ₹299</p>
+          </div>
+          <div class="offer-emoji">🚴</div>
+        </div>
+        <div class="offer-card green">
+          <div class="offer-text">
+            <h3>Zomato Pro</h3>
+            <p>Get exclusive member discounts</p>
+          </div>
+          <div class="offer-emoji">⭐</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<section class="hero">
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-logo"><span class="logo-z">z</span><span class="logo-omato">omato</span></div>
+          <p>Delivering happiness to your door since 2010.</p>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-youtube"></i></a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <h4>Company</h4>
+          <a href="#">About us</a>
+          <a href="#">Careers</a>
+          <a href="#">Blog</a>
+          <a href="#">Press</a>
+        </div>
+        <div class="footer-links">
+          <h4>For restaurants</h4>
+          <a href="#">Partner with us</a>
+          <a href="#">Apps for you</a>
+          <a href="#">Business app</a>
+        </div>
+        <div class="footer-links">
+          <h4>Learn more</h4>
+          <a href="#">Privacy policy</a>
+          <a href="#">Security</a>
+          <a href="#">Terms</a>
+          <a href="#">Sitemap</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>© 2024 Zomato Clone. Built for educational purposes.</p>
+      </div>
+    </div>
+  </footer>
 
-<div class="hero-content">
+  <!-- LOGIN MODAL -->
+  <div class="modal-overlay" id="login-modal" onclick="closeModalOutside(event)">
+    <div class="modal">
+      <button class="modal-close" onclick="toggleLoginModal()"><i class="fas fa-times"></i></button>
+      <div class="modal-logo"><span class="logo-z">z</span><span class="logo-omato">omato</span></div>
+      <h3>Log in or sign up</h3>
+      <p class="modal-sub">Get access to your Orders, Wishlist and Recommendations</p>
+      <input type="text" class="modal-input" placeholder="Enter your phone number or email" id="login-input" />
+      <button class="btn-continue" onclick="handleLogin()">Continue</button>
+      <div class="modal-or">or</div>
+      <button class="btn-google"><i class="fab fa-google"></i> Continue with Google</button>
+    </div>
+  </div>
 
-<h1 id="cityName">Bangalore</h1>
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
 
-<p id="dateTime"></p>
-
-<div class="stats">
-
-<div class="stat">
-<h3 id="wind">--</h3>
-<span>Wind</span>
-</div>
-
-<div class="stat">
-<h3 id="humidity">--</h3>
-<span>Humidity</span>
-</div>
-
-<div class="stat">
-<h3 id="aqi">Good</h3>
-<span>AQI</span>
-</div>
-
-</div>
-
-</div>
-
-<div class="temp-card">
-
-<div id="weatherIcon">☁</div>
-
-<h2 id="temp">23°C</h2>
-
-<p id="condition">Cloudy</p>
-
-</div>
-
-</section>
-
-<section class="forecast">
-
-<h2>Quick Access</h2>
-
-<div class="forecast-cards">
-
-<div class="card" onclick="window.location.href='forecast.html'">
-Forecast
-</div>
-
-<div class="card" onclick="window.location.href='health.html'">
-Health Guide
-</div>
-
-</div>
-
-</section>
-
-<section class="health">
-
-<h2>Today's Health Recommendation</h2>
-
-<div id="healthAdvice">
-Stay hydrated and exercise regularly.
-</div>
-
-</section>
-
-</div>
-
-<script src="script.js"></script>
-
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>

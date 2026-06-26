@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cart - Zomato Clone</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <span class="logo-z">z</span><span class="logo-omato">omato</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="restaurants.html" class="nav-link">Restaurants</a>
+        <a href="cart.html" class="nav-link cart-link active">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count" id="nav-cart-count">0</span>
+        </a>
+        <button class="btn-login" onclick="toggleLoginModal()">Log in</button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-header">
+    <div class="container">
+      <h1><i class="fas fa-shopping-cart"></i> Your Cart</h1>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div id="cart-page-content"></div>
+    </div>
+  </section>
+
+  <!-- ORDER SUCCESS -->
+  <div class="modal-overlay" id="order-success-modal">
+    <div class="modal success-modal">
+      <div class="success-icon">🎉</div>
+      <h2>Order placed!</h2>
+      <p>Your food is being prepared and will arrive in <strong id="eta-time">30–40</strong> minutes.</p>
+      <div class="order-id">Order ID: <strong id="order-id-text"></strong></div>
+      <div class="tracking-steps">
+        <div class="track-step active"><i class="fas fa-check-circle"></i><span>Order confirmed</span></div>
+        <div class="track-step" id="track-preparing"><i class="fas fa-utensils"></i><span>Preparing</span></div>
+        <div class="track-step" id="track-delivery"><i class="fas fa-motorcycle"></i><span>On the way</span></div>
+        <div class="track-step" id="track-delivered"><i class="fas fa-home"></i><span>Delivered</span></div>
+      </div>
+      <a href="index.html" class="btn-checkout" onclick="clearCartAndClose()">Back to home</a>
+    </div>
+  </div>
+
+  <!-- LOGIN MODAL -->
+  <div class="modal-overlay" id="login-modal" onclick="closeModalOutside(event)">
+    <div class="modal">
+      <button class="modal-close" onclick="toggleLoginModal()"><i class="fas fa-times"></i></button>
+      <div class="modal-logo"><span class="logo-z">z</span><span class="logo-omato">omato</span></div>
+      <h3>Log in or sign up</h3>
+      <p class="modal-sub">Get access to your Orders, Wishlist and Recommendations</p>
+      <input type="text" class="modal-input" placeholder="Enter your phone number or email" id="login-input" />
+      <button class="btn-continue" onclick="handleLogin()">Continue</button>
+      <div class="modal-or">or</div>
+      <button class="btn-google"><i class="fab fa-google"></i> Continue with Google</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/checkout.js"></script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Menu - Zomato Clone</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <span class="logo-z">z</span><span class="logo-omato">omato</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="restaurants.html" class="nav-link">Restaurants</a>
+        <a href="cart.html" class="nav-link cart-link">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count" id="nav-cart-count">0</span>
+        </a>
+        <button class="btn-login" onclick="toggleLoginModal()">Log in</button>
+      </div>
+      <div class="hamburger" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="index.html">Home</a>
+      <a href="restaurants.html">Restaurants</a>
+      <a href="cart.html">Cart</a>
+    </div>
+  </nav>
+
+  <!-- RESTAURANT HERO -->
+  <div class="rest-detail-hero" id="rest-hero">
+    <div class="container">
+      <div class="breadcrumb">
+        <a href="index.html">Home</a> &rsaquo;
+        <a href="restaurants.html">Restaurants</a> &rsaquo;
+        <span id="rest-breadcrumb-name">Loading...</span>
+      </div>
+      <div class="rest-detail-info">
+        <div class="rest-detail-emoji" id="rest-emoji"></div>
+        <div>
+          <h1 id="rest-name">Loading...</h1>
+          <p id="rest-cuisine" class="rest-cuisine-tag"></p>
+          <div class="rest-meta-row">
+            <span class="meta-pill green"><i class="fas fa-star"></i> <span id="rest-rating"></span></span>
+            <span class="meta-pill"><i class="fas fa-clock"></i> <span id="rest-time"></span></span>
+            <span class="meta-pill"><i class="fas fa-tag"></i> <span id="rest-cost"></span></span>
+            <span class="meta-pill"><i class="fas fa-motorcycle"></i> <span id="rest-delivery"></span></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MENU CONTENT -->
+  <div class="container rest-detail-body">
+    <div class="menu-sidebar">
+      <h4>Menu</h4>
+      <ul id="menu-category-nav"></ul>
+    </div>
+    <div class="menu-main">
+      <div class="menu-search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" id="menu-search" placeholder="Search within menu..." oninput="filterMenuItems()" />
+      </div>
+      <div id="menu-sections"></div>
+    </div>
+    <div class="cart-sidebar">
+      <div class="cart-widget" id="cart-widget">
+        <h4><i class="fas fa-shopping-cart"></i> Your order</h4>
+        <div id="cart-widget-items">
+          <div class="empty-cart-msg">Your cart is empty. Add items from the menu!</div>
+        </div>
+        <div id="cart-widget-total" style="display:none">
+          <div class="cart-total-row"><span>Subtotal</span><span id="widget-subtotal"></span></div>
+          <div class="cart-total-row"><span>Delivery</span><span id="widget-delivery"></span></div>
+          <div class="cart-total-row cart-grand-total"><span>Total</span><span id="widget-total"></span></div>
+          <a href="cart.html" class="btn-checkout">Go to checkout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGIN MODAL -->
+  <div class="modal-overlay" id="login-modal" onclick="closeModalOutside(event)">
+    <div class="modal">
+      <button class="modal-close" onclick="toggleLoginModal()"><i class="fas fa-times"></i></button>
+      <div class="modal-logo"><span class="logo-z">z</span><span class="logo-omato">omato</span></div>
+      <h3>Log in or sign up</h3>
+      <p class="modal-sub">Get access to your Orders, Wishlist and Recommendations</p>
+      <input type="text" class="modal-input" placeholder="Enter your phone number or email" id="login-input" />
+      <button class="btn-continue" onclick="handleLogin()">Continue</button>
+      <div class="modal-or">or</div>
+      <button class="btn-google"><i class="fab fa-google"></i> Continue with Google</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/menu.js"></script>
+</body>
+</html>

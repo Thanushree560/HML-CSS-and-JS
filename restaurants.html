@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Restaurants - Zomato Clone</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">
+        <span class="logo-z">z</span><span class="logo-omato">omato</span>
+      </a>
+      <div class="nav-links">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="restaurants.html" class="nav-link active">Restaurants</a>
+        <a href="cart.html" class="nav-link cart-link">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="cart-count" id="nav-cart-count">0</span>
+        </a>
+        <button class="btn-login" onclick="toggleLoginModal()">Log in</button>
+      </div>
+      <div class="hamburger" onclick="toggleMobileMenu()">
+        <i class="fas fa-bars"></i>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <a href="index.html">Home</a>
+      <a href="restaurants.html">Restaurants</a>
+      <a href="cart.html">Cart</a>
+    </div>
+  </nav>
+
+  <!-- PAGE HEADER -->
+  <div class="page-header">
+    <div class="container">
+      <h1>Restaurants in your area</h1>
+      <p>Showing delivery restaurants near you</p>
+    </div>
+  </div>
+
+  <!-- FILTERS & RESTAURANTS -->
+  <section class="section">
+    <div class="container">
+      <div class="filter-bar">
+        <div class="search-box">
+          <i class="fas fa-search"></i>
+          <input type="text" id="restaurant-search" placeholder="Search restaurants..." oninput="filterRestaurants()" />
+        </div>
+        <div class="filter-btns">
+          <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+          <button class="filter-btn" onclick="setFilter('pizza', this)">🍕 Pizza</button>
+          <button class="filter-btn" onclick="setFilter('burger', this)">🍔 Burgers</button>
+          <button class="filter-btn" onclick="setFilter('sushi', this)">🍣 Sushi</button>
+          <button class="filter-btn" onclick="setFilter('indian', this)">🍛 Indian</button>
+          <button class="filter-btn" onclick="setFilter('chinese', this)">🥡 Chinese</button>
+          <button class="filter-btn" onclick="setFilter('dessert', this)">🧁 Desserts</button>
+        </div>
+        <div class="sort-box">
+          <label>Sort by:</label>
+          <select id="sort-select" onchange="sortRestaurants()">
+            <option value="rating">Top rated</option>
+            <option value="time">Delivery time</option>
+            <option value="cost_low">Cost: Low to High</option>
+            <option value="cost_high">Cost: High to Low</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="result-count" id="result-count"></div>
+      <div class="restaurants-grid" id="all-restaurants"></div>
+    </div>
+  </section>
+
+  <!-- LOGIN MODAL -->
+  <div class="modal-overlay" id="login-modal" onclick="closeModalOutside(event)">
+    <div class="modal">
+      <button class="modal-close" onclick="toggleLoginModal()"><i class="fas fa-times"></i></button>
+      <div class="modal-logo"><span class="logo-z">z</span><span class="logo-omato">omato</span></div>
+      <h3>Log in or sign up</h3>
+      <p class="modal-sub">Get access to your Orders, Wishlist and Recommendations</p>
+      <input type="text" class="modal-input" placeholder="Enter your phone number or email" id="login-input" />
+      <button class="btn-continue" onclick="handleLogin()">Continue</button>
+      <div class="modal-or">or</div>
+      <button class="btn-google"><i class="fab fa-google"></i> Continue with Google</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/restaurants.js"></script>
+</body>
+</html>
