@@ -1,61 +1,81 @@
-# Premium Calculator with MongoDB History
+# Daily Calendar (MongoDB-backed)
 
-Your calculator now saves every calculation to MongoDB and shows a history panel next to it.
+Your calendar now stores notes in MongoDB instead of the browser's `localStorage`.
+Notes are shared across devices/browsers and persist even if you clear browser data.
 
-## How it's wired together
+## What changed
 
-A browser page can't talk to MongoDB directly — it needs a server in between. That's what `server.js` does:
+- **Before:** `localStorage.setItem(...)` / `getItem(...)` in the browser — notes only lived on one device, in one browser.
+- **Now:** an Express server exposes a small REST API (`/api/notes`) backed by MongoDB via Mongoose. The frontend calls that API with `fetch()`.
+
+## Project structure
 
 ```
-calci.html (browser)  →  server.js (Express, port 3000)  →  MongoDB
+calendar-app/
+├── server.js          # Express server + MongoDB connection + API routes
+├── package.json
+├── .env.example        # copy to .env and fill in your MongoDB URI
+└── public/
+    └── cal.html         # the calendar UI, now talks to the API instead of localStorage
 ```
-
-## Files
-
-- `calci.html` – the calculator UI + history panel
-- `server.js` – Express API that saves/fetches history from MongoDB
-- `package.json` – dependencies
-- `.env` – your MongoDB connection string
 
 ## Setup
 
-1. **Install Node.js** (v18+) if you don't have it: https://nodejs.org
-
-2. **Get MongoDB running** — pick one:
-   - **Local**: install MongoDB Community Server (https://www.mongodb.com/try/download/community), then just run it — the default `.env` already points at `mongodb://127.0.0.1:27017/calculator`.
-   - **Cloud (MongoDB Atlas, free tier)**: create a cluster at https://www.mongodb.com/cloud/atlas, get your connection string, and paste it into `.env` as `MONGODB_URI`.
-
-3. **Install dependencies:**
+1. **Install dependencies**
    ```bash
-   cd calculator-app
+   cd calendar-app
    npm install
    ```
 
-4. **Start the server:**
+2. **Configure your MongoDB connection**
+   ```bash
+   cp .env.example .env
+   ```
+   Edit `.env` and set `MONGODB_URI`:
+   - Local MongoDB: `mongodb://127.0.0.1:27017/daily_calendar`
+   - MongoDB Atlas (cloud, free tier available): `mongodb+srv://<user>:<password>@<cluster>.mongodb.net/daily_calendar`
+
+   If you don't have MongoDB installed locally, the easiest option is a free
+   [MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register) cluster — create one, add a database user,
+   whitelist your IP (or `0.0.0.0/0` for testing), and copy the connection string it gives you.
+
+3. **Run the server**
    ```bash
    npm start
    ```
    You should see:
    ```
-   ✅ Connected to MongoDB: mongodb://127.0.0.1:27017/calculator
+   ✅ Connected to MongoDB
    🚀 Server running at http://localhost:3000
    ```
 
-5. **Open the calculator:** go to `http://localhost:3000/calci.html` in your browser (not by double-clicking the file — it needs to be served by the Express server so it can reach the API).
+4. **Open the calendar**
+   Visit `http://localhost:3000/cal.html` in your browser.
 
-## What's stored
+## API reference
 
-Each time you press `=`, the expression and its result are saved to a `History` collection in MongoDB with a timestamp. The history panel:
-- Loads past calculations when the page opens
-- Refreshes after every new calculation
-- Lets you click a past result to reuse it
-- Has a "Clear all" button to wipe history
+| Method | Endpoint                | Description                                  |
+|--------|--------------------------|-----------------------------------------------|
+| GET    | `/api/notes`             | Get all notes as `{ dateKey: text }`          |
+| GET    | `/api/notes/:dateKey`    | Get a single note                             |
+| POST   | `/api/notes`             | Upsert a note — body: `{ dateKey, text }`     |
+| DELETE | `/api/notes/:dateKey`    | Delete a note                                 |
 
-## API endpoints (if you want to extend it)
+`dateKey` format is `year-monthIndex-day`, e.g. `2026-8-14` for Sep 14, 2026 (month is 0-indexed, matching JavaScript's `Date`).
 
-| Method | Endpoint            | Description                  |
-|--------|---------------------|-------------------------------|
-| GET    | `/api/history`       | Get last 100 calculations     |
-| POST   | `/api/history`       | Save a new calculation        |
-| DELETE | `/api/history/:id`   | Delete one entry              |
-| DELETE | `/api/history`       | Clear all history              |
+## Notes on the data model
+
+Each note is stored as a MongoDB document:
+```json
+{
+  "dateKey": "2026-8-14",
+  "text": "Dentist appointment at 3pm",
+  "createdAt": "...",
+  "updatedAt": "..."
+}
+```
+Saving an empty/blank note automatically deletes the document, so the collection only ever holds days that actually have notes. Days with a saved note now show a small red dot in the calendar grid.
+
+## Deploying
+
+If you want this reachable outside your machine, deploy `server.js` to any Node host (Render, Railway, Fly.io, a VPS, etc.), point `MONGODB_URI` at your Atlas cluster via that platform's environment variables, and serve/visit the deployed URL instead of `localhost`.
