@@ -1,11 +1,15 @@
 {
-  "name": "color-changer",
+  "name": "premium-calculator",
   "version": "1.0.0",
-  "description": "Simple HTML CSS JS project",
+  "description": "Premium calculator with MongoDB-backed calculation history",
+  "main": "server.js",
   "scripts": {
-    "start": "npx live-server"
+    "start": "node server.js"
   },
-  "devDependencies": {
-    "live-server": "^1.2.2"
+  "dependencies": {
+    "express": "^4.19.2",
+    "mongoose": "^8.5.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5"
   }
 }

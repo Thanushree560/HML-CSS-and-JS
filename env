@@ -1,0 +1,7 @@
+# Local MongoDB (default if you have MongoDB installed and running locally)
+MONGODB_URI=mongodb://127.0.0.1:27017/calculator
+
+# For MongoDB Atlas (cloud), replace with something like:
+# MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/calculator
+
+PORT=3000
