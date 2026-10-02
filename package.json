@@ -1,17 +1,10 @@
 {
-  "name": "movie-review-app",
+  "name": "node",
   "version": "1.0.0",
-  "description": "Full-stack Movie Review & Rating System (Express + MongoDB + Vanilla JS)",
-  "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "live-server"
   },
-  "dependencies": {
-    "bcryptjs": "^2.4.3",
-    "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
-    "express": "^4.19.2",
-    "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.6.0"
+  "devDependencies": {
+    "live-server": "^1.2.2"
   }
 }
