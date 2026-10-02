@@ -1,21 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Color Changer</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Scary House</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div id="startScreen">
+    <h1>SCARY HOUSE</h1>
+    <p>Find two keys and two clues.</p>
+    <p>Discover the code and escape before the monster catches you.</p>
+    <button id="startButton">PRESS SPACE TO START</button>
+    <small>W A S D · Mouse Look · F Flashlight · E Interact · ESC Pause</small>
+  </div>
 
-<div class="container">
-    <h1>🎨 Color Changer</h1>
-    <p>Click the button to change the background color.</p>
+  <div id="hud">
+    <div id="objective">Find 2 keys and 2 clues</div>
+    <div id="timer">10:00</div>
+    <div id="fearBox">
+      FEAR
+      <div class="fearBar">
+        <div id="fearFill"></div>
+      </div>
+    </div>
+    <div id="inventory">
+      KEYS: <span id="keys">0 / 2</span><br />
+      CLUES: <span id="clues">0 / 2</span>
+    </div>
+    <div id="message"></div>
+    <div id="crosshair">+</div>
+  </div>
 
-    <button id="btn">Change Color</button>
-</div>
+  <div id="codePanel" class="hidden">
+    <h2>FINAL DOOR</h2>
+    <p>Enter the three-digit code.</p>
+    <input id="codeInput" maxlength="3" inputmode="numeric" />
+    <button id="submitCode">ESCAPE</button>
+  </div>
 
-<script src="script.js"></script>
+  <div id="endScreen" class="hidden">
+    <h1 id="endTitle"></h1>
+    <p id="endText"></p>
+    <button onclick="location.reload()">PLAY AGAIN</button>
+  </div>
 
+  <script type="module" src="game.js"></script>
 </body>
 </html>
