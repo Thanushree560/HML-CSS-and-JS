@@ -1,9 +1,8 @@
 {
-  "name": "daily-calendar-mongo",
+  "name": "expense-tracker-pro",
   "version": "1.0.0",
-  "description": "Daily calendar with notes stored in MongoDB",
+  "description": "Expense Tracker Pro with Express + MongoDB backend",
   "main": "server.js",
-  "type": "commonjs",
   "scripts": {
     "start": "node server.js",
     "dev": "nodemon server.js"
@@ -12,7 +11,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
-    "mongoose": "^8.5.0"
+    "mongoose": "^8.5.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.4"

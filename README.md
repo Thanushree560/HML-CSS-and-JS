@@ -1,81 +1,107 @@
-# Daily Calendar (MongoDB-backed)
+# Expense Tracker Pro (with MongoDB backend)
 
-Your calendar now stores notes in MongoDB instead of the browser's `localStorage`.
-Notes are shared across devices/browsers and persist even if you clear browser data.
+Your expenses now save to a real database (MongoDB) instead of the browser's
+localStorage, so data persists across devices/browsers and multiple people
+could use it. You can also export everything to a CSV file that opens
+directly in Excel.
 
 ## What changed
 
-- **Before:** `localStorage.setItem(...)` / `getItem(...)` in the browser — notes only lived on one device, in one browser.
-- **Now:** an Express server exposes a small REST API (`/api/notes`) backed by MongoDB via Mongoose. The frontend calls that API with `fetch()`.
+- Added an **Express** server (`server.js`) that serves the frontend and
+  exposes an API at `/api/expenses`.
+- Added a **Mongoose** model (`models/Expense.js`) and routes
+  (`routes/expenses.js`) for creating, listing, and deleting expenses in
+  MongoDB.
+- Updated `public/script.js` to call that API with `fetch` instead of reading
+  and writing `localStorage`.
+- Added an **Export** button (top-right, CSV icon) that downloads all
+  expenses as `expenses.csv`, which opens straight in Excel/Google Sheets.
+- Income vs. expense is now tracked properly: anything with category
+  "Salary" is treated as income, everything else as an expense, and Total
+  Balance = Income − Expense.
 
-## Project structure
+## Folder structure
 
 ```
-calendar-app/
-├── server.js          # Express server + MongoDB connection + API routes
+expense-tracker/
+├── server.js
 ├── package.json
-├── .env.example        # copy to .env and fill in your MongoDB URI
+├── .env.example
+├── models/
+│   └── Expense.js
+├── routes/
+│   └── expenses.js
 └── public/
-    └── cal.html         # the calendar UI, now talks to the API instead of localStorage
+    ├── index.html
+    ├── style.css
+    └── script.js
 ```
 
-## Setup
+## 1. Install dependencies
 
-1. **Install dependencies**
-   ```bash
-   cd calendar-app
-   npm install
-   ```
+```bash
+cd expense-tracker
+npm install
+```
 
-2. **Configure your MongoDB connection**
-   ```bash
-   cp .env.example .env
-   ```
-   Edit `.env` and set `MONGODB_URI`:
-   - Local MongoDB: `mongodb://127.0.0.1:27017/daily_calendar`
-   - MongoDB Atlas (cloud, free tier available): `mongodb+srv://<user>:<password>@<cluster>.mongodb.net/daily_calendar`
+## 2. Set up MongoDB
 
-   If you don't have MongoDB installed locally, the easiest option is a free
-   [MongoDB Atlas](https://www.mongodb.com/cloud/atlas/register) cluster — create one, add a database user,
-   whitelist your IP (or `0.0.0.0/0` for testing), and copy the connection string it gives you.
+You need a MongoDB connection string. Two easy options:
 
-3. **Run the server**
-   ```bash
-   npm start
-   ```
-   You should see:
-   ```
-   ✅ Connected to MongoDB
-   🚀 Server running at http://localhost:3000
-   ```
+**Option A — MongoDB Atlas (free, no install, recommended)**
+1. Go to https://www.mongodb.com/cloud/atlas/register and create a free
+   account and a free (M0) cluster.
+2. Under "Database Access", create a database user with a username/password.
+3. Under "Network Access", allow access from your current IP (or `0.0.0.0/0`
+   for testing).
+4. Click "Connect" → "Drivers" and copy the connection string, e.g.:
+   `mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/expense_tracker`
 
-4. **Open the calendar**
-   Visit `http://localhost:3000/cal.html` in your browser.
+**Option B — Local MongoDB**
+Install MongoDB Community Server (https://www.mongodb.com/try/download/community)
+and run it locally. The default local URI is:
+`mongodb://127.0.0.1:27017/expense_tracker`
+
+## 3. Configure environment variables
+
+Copy `.env.example` to `.env` and paste in your connection string:
+
+```bash
+cp .env.example .env
+```
+
+Then edit `.env` and set `MONGODB_URI` to whichever connection string you
+picked above.
+
+## 4. Run the app
+
+```bash
+npm start
+```
+
+You should see:
+```
+Connected to MongoDB
+Server running on http://localhost:5000
+```
+
+Open **http://localhost:5000** in your browser — that's it. The old
+`live-server`-only setup is no longer needed since Express now serves the
+frontend files directly (from `public/`).
 
 ## API reference
 
-| Method | Endpoint                | Description                                  |
-|--------|--------------------------|-----------------------------------------------|
-| GET    | `/api/notes`             | Get all notes as `{ dateKey: text }`          |
-| GET    | `/api/notes/:dateKey`    | Get a single note                             |
-| POST   | `/api/notes`             | Upsert a note — body: `{ dateKey, text }`     |
-| DELETE | `/api/notes/:dateKey`    | Delete a note                                 |
+| Method | Endpoint                     | Description                     |
+|--------|-------------------------------|----------------------------------|
+| GET    | `/api/expenses`               | List all expenses (newest first) |
+| POST   | `/api/expenses`               | Add an expense `{ title, amount, category }` |
+| DELETE | `/api/expenses/:id`           | Delete an expense by its Mongo `_id` |
+| GET    | `/api/expenses/export/csv`    | Download all expenses as a CSV (opens in Excel) |
 
-`dateKey` format is `year-monthIndex-day`, e.g. `2026-8-14` for Sep 14, 2026 (month is 0-indexed, matching JavaScript's `Date`).
+## Notes
 
-## Notes on the data model
-
-Each note is stored as a MongoDB document:
-```json
-{
-  "dateKey": "2026-8-14",
-  "text": "Dentist appointment at 3pm",
-  "createdAt": "...",
-  "updatedAt": "..."
-}
-```
-Saving an empty/blank note automatically deletes the document, so the collection only ever holds days that actually have notes. Days with a saved note now show a small red dot in the calendar grid.
-
-## Deploying
-
-If you want this reachable outside your machine, deploy `server.js` to any Node host (Render, Railway, Fly.io, a VPS, etc.), point `MONGODB_URI` at your Atlas cluster via that platform's environment variables, and serve/visit the deployed URL instead of `localhost`.
+- Deleting now uses MongoDB's `_id` field instead of a timestamp, so make
+  sure you're running the updated `script.js` from `public/`.
+- If you'd rather not deal with MongoDB at all right now, the CSV export
+  route works off whatever's already in the database, and you can always
+  re-import a CSV into Excel/Sheets for reporting.
